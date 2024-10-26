@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM-Enhanced Text Editor</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #editor {
+            width: 80%;
+            height: 300px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 20px auto;
+            overflow: auto;
+        }
+        #floating-menu {
+            position: absolute;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+            display: none;
+            padding: 10px;
+        }
+        #editor:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+<div id="editor" contenteditable="true">
+    This is a simple text editor. Select some text to interact with the LLM.
+</div>
+
+<div id="floating-menu">
+    <button onclick="buildPrompt()">Generate Prompt</button>
+</div>
+
+<script>
+    const editor = document.getElementById('editor');
+    const floatingMenu = document.getElementById('floating-menu');
+
+    // Track when the user selects text
+    editor.addEventListener('mouseup', function (event) {
+        const selection = window.getSelection();
+        if (!selection.isCollapsed) {
+            const rect = selection.getRangeAt(0).getBoundingClientRect();
+            // Show the floating menu near the selection
+            floatingMenu.style.left = `${rect.x + window.scrollX}px`;
+            floatingMenu.style.top = `${rect.bottom + window.scrollY}px`;
+            floatingMenu.style.display = 'block';
+        } else {
+            floatingMenu.style.display = 'none';
+        }
+    });
+
+    // Hide the floating menu when clicking outside
+    document.addEventListener('mousedown', function (event) {
+        if (!floatingMenu.contains(event.target)) {
+            floatingMenu.style.display = 'none';
+        }
+    });
+
+    // Build a prompt and send the selected text to the server (Python backend)
+    function buildPrompt() {
+        const selection = window.getSelection();
+        const selectedText = selection.toString();
+        
+        if (selectedText) {
+            fetch('/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userInput: selectedText }),  // Change the key to match backend expectations
+            })
+            .then(response => response.json())
+            .then(data => {
+                const generatedText = data.response;
+
+                // Replace the selected text with the generated text
+                const range = selection.getRangeAt(0);
+                range.deleteContents();
+
+                const newTextNode = document.createTextNode(generatedText);
+                range.insertNode(newTextNode);
+
+                // Clear the selection
+                selection.removeAllRanges();
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    }
+
+</script>
+
+</body>
+</html>
