@@ -1,0 +1,82 @@
+/* Body styling */
+body {
+  margin: 0; /* Remove default margin */
+  font-family: Arial, sans-serif; /* Set a default font */
+}
+
+/* Header styling */
+header {
+  background-color: #333333b4;
+  color: white;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed; /* Fix the header at the top */
+  top: 0; /* Position it at the top */
+  width: 100%; /* Full width */
+  z-index: 1000; /* Keep it above other content */
+}
+
+.logo h1 {
+  margin: 0;
+}
+
+
+/* Main styling */
+.main {
+  display: flex; /* Use flexbox layout */
+  align-items: stretch;
+  margin-top: 60px; /* Offset for fixed header height */
+  height: calc(100vh - 60px); /* Full height minus header height */
+}
+
+/* Sidebar styling */
+.sidebar {
+  display: inline-block; /* Allows the sidebar to adjust to its content */
+  width: auto; /* Fixed width for the sidebar */
+  background-color: #f4f4f4; /* Background color */
+  padding: 1em;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar button {
+  padding: 10px 10px; /* Adjust padding as needed */
+  font-size: 10;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-block; /* Makes the button width fit its content */
+}
+
+.sidebar button:hover {
+  background-color: #555;
+}
+
+/* File Grid styling */
+.file-grid {
+  flex-grow: 1; /* Allows the file-grid to fill remaining space */
+  background-color: rgba(55, 155, 172, 0.553); /* Background color */
+  padding: 20px; /* Add some padding for content */
+  overflow: auto; /* Ensure it handles overflow if content is large */
+}
+
+.file-tile {
+  width: 100px; /* Set a fixed width for the square */
+  height: 100px; /* Set a fixed height to match the width */
+  border: 1px solid #ccc; /* Border for the tile */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px; /* Internal padding */
+  margin: 10px; /* Space between tiles */
+  display: flex; /* Use flexbox to align items */
+  flex-direction: column; /* Arrange items vertically */
+  align-items: center; /* Center items horizontally */
+  justify-content: center; /* Center items vertically */
+  background-color: #fff; /* Background color of the tile */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Shadow for tile */
+}
+
+
